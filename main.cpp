@@ -4,58 +4,101 @@
 #include <stdlib.h>
 using namespace std;
 
-void prijava(); ///Prijava nakon kreiranja racuna.
-void kreiraj_racun(); ///Kreiranje racuna
-void knjige_na_raspolaganju();///Funckija za izbor knjiga.
-void unosdatum(int &d,int&m,int&g);///Funckija za datum.
-void pozoviAdmina();///Funckija za admina.
-bool datum(int d, int m, int g);///Funckija za datum.
-bool prestupna(int g);///Funckija za datum.
-void admin_mogucnosti();///ispis mogucnosti admina
-void ispis_racuna(); ///ispis svih racuna iz datoteke;
-void ispis_knjiga();///isšis knjiga iz datoteke.
-void ispis_zadanih_knjiga();///ispis izdanih knjiga iz datoteke.
-void pozovi_menu(); ///pocetak
-void brisi_racune();///funkcija koja brise sve racuna iz datoteke
-void brisi_izdane_knjige();
-void korisnik_mogucnosti(); ///fuckcija za korisnika i mogucnosti njegove
-void pregled_knjiga_za_racun(); ///pregled knjiga za prijavljen racun
+class ucenik{
+    string ime;
+    string prezime;
+    string razred;
+    string brtel;
 
-char * crt = "=============================================";    ///Ovo je samo da izgleda pristojno
-char * tack = "*********************************************";  ///isto
+public:
+
+    //setters
+    void staviIme(string ime){this->ime=ime;}
+    void staviPrezime(string prezime){this->prezime=prezime;}
+    void staviRazred(string razred){this->razred=razred;}
+    void staviBrtel(string brtel){this->brtel=brtel;}
+    //getters
+    string dajIme(){return ime;}
+    string dajPrezime(){return prezime;}
+    string dajRazred(){return razred;}
+    string dajBrtel(){return brtel;}
+
+    void knjige_na_raspolaganju();///Funckija za izbor knjiga.
+    void pregled_knjiga_za_racun(); ///pregled knjiga za prijavljen racun
+    void korisnik_mogucnosti();  ///fuckcija za korisnika i mogucnosti njegove
+
+};
+
+class date{
+public:
+    int d,m,g;
+
 const int maxgod = 2500; ///za datum funkciju
 const int mingod = 2000;  ///Za datum funkciju bitno
 
-struct ucenik      ///Struktura koju sam koristio da upisujem u datoteku prilikom upisa ili kreiranja racuna
-{
-    char ime[25];
-    char prezime[25];
-    char razred[15];
-    char brtel[20];
-};
+    bool prestupna(int g);///Funckija za datum.
+    bool datum(int d, int m, int g);///Funckija za datum.
+    void unosdatum(int &d,int&m,int&g);///Funckija za datum.
 
-struct ucenik1  ///Struktura ucenika koji je prijavljen trenutno;
+};
+class admin
 {
     string ime;
     string prezime;
+    int password;
+
+public:
+    void admin_mogucnosti();///ispis mogucnosti admina
+    void pozoviAdmina();  ///Funckija za admina.
+    void ispis_racuna(); ///ispis svih racuna iz datoteke;
+    void ispis_knjiga();///isÅ¡is knjiga iz datoteke.
+    void ispis_zadanih_knjiga();///ispis izdanih knjiga iz datoteke.
+    void brisi_izdane_knjige();
+    void brisi_racune();///funkcija koja brise sve racuna iz datoteke
+
+}a1,a2;
+
+char * crt = "=============================================";    ///Ovo je samo da izgleda pristojno
+char * tack = "*********************************************";  ///isto
+
+class menu{
+    public:
+void prijava(); ///Prijava nakon kreiranja racuna.
+void kreiraj_racun(); ///Kreiranje racuna
+void pozovi_menu(); ///pocetak
+
+};
+
+class trenutniUcenik:public ucenik  ///klasa ucenika koji je prijavljen trenutno;
+{
+    string ime;
+    string prezime;
+
+public:
+
+
+    void staviIme(string ime){this->ime=ime;}
+    void staviPrezime(string prezime){this->prezime=prezime;}
+    string dajIme(){return ime;}
+    string dajPrezime(){return prezime;}
+
 }u1;
 
-struct admin  ///struktura admina
-{
-   string ime;
-   string prezime;
-   int password;
-}a1;
 
 int main()
 {
-    pozovi_menu(); ///glavni int main ovo je jedina funkcija prizvana
+    menu x;
+
+    x.pozovi_menu();
+
+ //   pozovi_menu(); ///glavni int main ovo je jedina funkcija prizvana
 
     return 0;
 }
 
-void korisnik_mogucnosti()
-{   int odg;
+void ucenik::korisnik_mogucnosti()  {
+       menu x;
+       int odg;
     do{
     cout<<"Dobro dosli korisnik"<<endl;
     cout<<"Izaberite opciju:"<<endl;
@@ -73,15 +116,14 @@ void korisnik_mogucnosti()
     {
         case 1: knjige_na_raspolaganju(); break;
         case 2: pregled_knjiga_za_racun(); break;
-        case 3: pozovi_menu(); return;
+        case 3: x.pozovi_menu(); return;
     }
     } while(odg!=3);
 cout<<"GRESKA GRESKA GREKSA"<<odg<<endl;
     return;
 }
 
-
-void pozovi_menu()  ///pocetak
+void menu::pozovi_menu()  ///pocetak
 {   string odg;
     int odg1;
     cout<<crt<<endl;
@@ -101,7 +143,7 @@ void pozovi_menu()  ///pocetak
 
     switch(odg1)
     {
-        case 1: pozoviAdmina(); return;
+        case 1: a2.pozoviAdmina(); return;
         case 2:
             do{
             cout<<"Da li imate racun kreiran kod nas(da/ne)?"<<endl;
@@ -140,8 +182,93 @@ void pozovi_menu()  ///pocetak
 
         return;*/
 }
-void pozoviAdmina()
-{
+
+void menu::kreiraj_racun()
+
+{   ucenik neki;
+    ofstream dat;
+    dat.open("racuni.txt",ios::app);
+    string ime,prezime,razred,brtel;
+    cout<<"Unesite vase podatke:"<<endl;
+    cout<<"Kako se zovete"<<endl;
+    cin>>ime;
+    neki.staviIme(ime);
+    cout<<"Kako se prezivate"<<endl;
+    cin>>prezime;
+    neki.staviPrezime(prezime);
+    cout<<"Koji ste razred"<<endl;
+    cin>>razred;
+    neki.staviRazred(razred);
+    cout<<"Broj telefona"<<endl;
+    cin>>brtel;
+    neki.staviBrtel(brtel);
+
+    dat<<endl<<neki.dajIme()<<endl;dat<<neki.dajPrezime()<<endl;dat<<neki.dajRazred()<<endl;dat<<neki.dajBrtel();
+    dat.close();
+
+    cout<<"Sad se prijavite sa vasim racunom"<<endl;
+    prijava();
+
+
+}
+void menu::prijava()
+{   bool uspjesno=false;
+    ucenik x;
+
+
+    string ime,prezime,razred;
+    string ime2,prezime2,razred2,brtel2;
+    cout<<tack<<endl;
+    cout<<"Prijavi se"<<endl;
+    cout<<tack<<endl;
+    ifstream dat;
+    dat.open("racuni.txt");
+
+    ucenik neki;
+
+    cout<<"Unesite vase ime"<<endl; cin>>ime;
+    cout<<"unesite vase prezime"<<endl;cin>>prezime;
+    cout<<"Koji ste razred unesite"<<endl;cin>>razred;
+    cout<<tack<<endl;
+    cout<<tack<<endl;
+    cout<<"Prolazimo kroz bazu podataka da nadem vas acount"<<endl;
+    cout<<tack<<endl;
+    cout<<tack<<endl;
+    while(dat)
+    {   dat>>ime2>>prezime2>>razred2>>brtel2;
+        if(ime==ime2&& prezime==prezime2 && razred==razred2)
+        uspjesno=true;
+        else
+            uspjesno=false;
+
+        if(uspjesno) break; ///izlazim iz while petlje cim nadem acc
+    }
+
+    dat.close();
+    string odg;
+
+    if(!uspjesno) do{
+    cout<<"Da li ste unijeli tacne podatke(da/ne)?"<<endl;
+    cin>>odg;
+    }
+    while(odg!="da"&&odg!="ne");
+
+    else {cout<<"Uspjesno ste prijavljeni!!!!!!!"<<endl<<endl;
+    u1.staviIme(ime);
+    u1.staviPrezime(prezime);
+    ///knjige_na_raspolaganju();
+    u1.korisnik_mogucnosti();
+    return;}
+
+    if(odg=="da")
+        {cout<<"Onda molimo vas da kreirate novi racun jer vam nema accounta"<<endl;
+        kreiraj_racun(); return;
+        }
+       if(odg=="ne") prijava();
+        ///ovdje sam pozivao knjige na rapslo i bio bug
+}
+void admin::pozoviAdmina()
+{      menu x;
       bool prisutan=false;
       ifstream dat;
       int password;
@@ -181,7 +308,7 @@ void pozoviAdmina()
         if(odg=="da")
         {
             cout<<"Onda ne znate ko je admin."<<endl;
-            pozovi_menu();
+            x.pozovi_menu();
             return;
         }}
 
@@ -190,89 +317,9 @@ void pozoviAdmina()
 
   }
 
-
-void kreiraj_racun()
-
-{   ucenik neki;
-    ofstream dat;
-    dat.open("racuni.txt",ios::app);
-
-    cout<<"Unesite vase podatke:"<<endl;
-    cout<<"Kako se zovete"<<endl;
-    cin>>neki.ime;
-    cout<<"Kako se prezivate"<<endl;
-    cin>>neki.prezime;
-    cout<<"Koji ste razred"<<endl;
-    cin>>neki.razred;
-    cout<<"Broj telefona"<<endl;
-    cin>>neki.brtel;
-
-    dat<<endl<<neki.ime<<endl;dat<<neki.prezime<<endl;dat<<neki.razred<<endl;dat<<neki.brtel;
-    dat.close();
-
-    cout<<"Sad se prijavite sa vasim racunom"<<endl;
-    prijava();
-
-
-}
-void prijava()
-{   bool uspjesno=false;
-
-
-
-    string ime,prezime,razred;
-    cout<<tack<<endl;
-    cout<<"Prijavi se"<<endl;
-    cout<<tack<<endl;
-    ifstream dat;
-    dat.open("racuni.txt");
-
-    ucenik neki;
-
-
-    cout<<"Unesite vase ime"<<endl; cin>>ime;
-    cout<<"unesite vase prezime"<<endl;cin>>prezime;
-    cout<<"Koji ste razred unesite"<<endl;cin>>razred;
-    cout<<tack<<endl;
-    cout<<tack<<endl;
-    cout<<"Prolazimo kroz bazu podataka da nadem vas acount"<<endl;
-    cout<<tack<<endl;
-    cout<<tack<<endl;
-    while(dat)
-    {   dat>>neki.ime>>neki.prezime>>neki.razred>>neki.brtel;
-        if(ime==neki.ime&& prezime==neki.prezime && razred==neki.razred)
-        uspjesno=true;
-        else
-            uspjesno=false;
-
-        if(uspjesno) break; ///izlazim iz while petlje cim nadem acc
-    }
-
-    dat.close();
-    string odg;
-
-    if(!uspjesno) do{
-    cout<<"Da li ste unijeli tacne podatke(da/ne)?"<<endl;
-    cin>>odg;
-    }
-    while(odg!="da"&&odg!="ne");
-
-    else {cout<<"Uspjesno ste prijavljeni!!!!!!!"<<endl<<endl;
-    u1.ime=ime;
-    u1.prezime=prezime;
-    ///knjige_na_raspolaganju();
-    korisnik_mogucnosti();
-    return;}
-
-    if(odg=="da")
-        {cout<<"Onda molimo vas da kreirate novi racun jer vam nema accounta"<<endl;
-        kreiraj_racun(); return;
-        }
-       if(odg=="ne") prijava();
-        ///ovdje sam pozivao knjige na rapslo i bio bug
-}
-void knjige_na_raspolaganju()
+void ucenik::knjige_na_raspolaganju()
 {
+    date x;
     int d,m,g;
     cout<<"Knjige koje mozete podici su:"<<endl;
     ifstream dat;
@@ -312,12 +359,12 @@ void knjige_na_raspolaganju()
                 cout<<"Unesite danasnji datum molim vas!!"<<endl;
         do
             {
-            unosdatum(d,m,g);
-                if(!datum(d,m,g))cout<<"Unesite ispravan datum molim vas!!!!!!"<<endl;
-} while(!datum(d,m,g));
+            x.unosdatum(d,m,g);
+                if(!x.datum(d,m,g))cout<<"Unesite ispravan datum molim vas!!!!!!"<<endl;
+} while(!x.datum(d,m,g));
             ofstream datoteka;
             datoteka.open("izdano.txt",ios::app);
-            datoteka<<"Uceniku: "<<u1.ime<<" "<<u1.prezime<<" je izdana knjiga: "<<knjiga
+            datoteka<<"Uceniku: "<<u1.dajIme()<<" "<<u1.dajPrezime()<<" je izdana knjiga: "<<knjiga
                 <<"  datuma:"<<d<<"."<<m<<"."<<g<<endl;
                 dat.close();
             cout<<"Uspjesno ste podigli knjigu i upisani ste u fajl"<<endl;
@@ -328,13 +375,13 @@ void knjige_na_raspolaganju()
     korisnik_mogucnosti();
 
 }
-bool prestupna(int g)
+bool date::prestupna(int g)
 {
 
 return (((g% 4 == 0) && (g% 100 != 0)) ||(g% 400 == 0));
 }
 
-bool datum(int d, int m, int g)
+bool date::datum(int d, int m, int g)
 {
 
     if (g > maxgod ||g < mingod)
@@ -356,7 +403,7 @@ bool datum(int d, int m, int g)
 
     return true;
 }
-void unosdatum(int &d,int&m,int&g)
+void date::unosdatum(int &d,int&m,int&g)
 {
 
 
@@ -380,8 +427,9 @@ void unosdatum(int &d,int&m,int&g)
             } while(!g);
 
 }
-void admin_mogucnosti()
+void admin::admin_mogucnosti()
 {   int odg;
+    menu x;
     cout<<crt<<endl;
     cout<<"Zdravo vi ste admin ove nase divne biblioteke!!!"<<endl;
   do{  cout<<"Izaberite mogucnosti:"<<endl;
@@ -412,11 +460,11 @@ void admin_mogucnosti()
         case 6:          break;
     }
 }while(odg!=6);
-pozovi_menu();
+x.pozovi_menu();
 
 
 }
-void ispis_knjiga()
+void admin::ispis_knjiga()
 {
     ifstream dat;
     dat.open("knjige.txt");
@@ -425,25 +473,26 @@ void ispis_knjiga()
     cout<<unos<<endl;}
     dat.close();
 }
-void ispis_racuna()
+void admin::ispis_racuna()
 {
-    ucenik s;
+    ucenik s; //ucenik za ispis racuna sa
+    string ime,prezime,razred,brtel;
     ifstream dat;
     dat.open("racuni.txt");
     string unos;
     while(dat.good()){
-            dat>>s.ime>>s.prezime>>s.razred>>s.brtel;
-            cout<<"Ime: "<<s.ime<<endl;
-            cout<<"Prezime: "<<s.prezime<<endl;
-            cout<<"Razred: "<<s.razred<<endl;
-            cout<<"Broj telefona: "<<s.brtel<<endl;
+            dat>>ime>>prezime>>razred>>brtel;
+            cout<<"Ime: "<<ime<<endl;
+            cout<<"Prezime: "<<prezime<<endl;
+            cout<<"Razred: "<<razred<<endl;
+            cout<<"Broj telefona: "<<brtel<<endl;
             cout<<endl;
 
    }
     dat.close();
 }
 
-void ispis_zadanih_knjiga()
+void admin::ispis_zadanih_knjiga()
 {
     ifstream dat;
     dat.open("izdano.txt");
@@ -455,7 +504,7 @@ void ispis_zadanih_knjiga()
     }
 dat.close();
 }
-void brisi_racune()
+void admin::brisi_racune()
 {   string s;
     ofstream dat;
     dat.open("racuni.txt",ios::out|ios::trunc);
@@ -464,9 +513,10 @@ void brisi_racune()
     dat.close();
 
 }
-void pregled_knjiga_za_racun()
+void ucenik::pregled_knjiga_za_racun()
 {
     ifstream dat;
+    trenutniUcenik tryStudent;
     dat.open("izdano.txt");
     string unos,ime,prezime,t;
 
@@ -475,16 +525,16 @@ void pregled_knjiga_za_racun()
         dat>>unos>>ime>>prezime;
         getline(dat,t);
         if(dat.good()) ///ubacio sam ovo jer mi je na kraju ispisivalo 2 puta zadnju liniju
-        if(u1.ime==ime&&u1.prezime==prezime)
+        if(u1.dajIme()==ime&&u1.dajPrezime()==prezime)
             cout<<unos<<ime<<" "<<prezime<<" "<<t<<endl;
     }
     dat.close();
 }
-void brisi_izdane_knjige()
+void admin::brisi_izdane_knjige()
 {
     ofstream dat;
     dat.open("izdano.txt",ios::out|ios::trunc);
-    if(!dat)cout<<"Nece"<<endl;
+    if(!dat)cout<<"Ne moze da se otvori datoteka"<<endl;
     cout<<"Obrisani su podatci o izdanim knjigama"<<endl;
     dat.close();
 
